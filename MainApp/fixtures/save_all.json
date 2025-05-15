@@ -1,0 +1,32 @@
+[
+{
+    "model": "MainApp.snippet",
+    "pk": 1,
+    "fields": {
+        "name": "Hello world Snippet",
+        "lang": "py",
+        "code": "print(\"Hello world\")",
+        "creation_date": "2025-05-15T09:11:03.011Z"
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 2,
+    "fields": {
+        "name": "Input two integers",
+        "lang": "py",
+        "code": "a,b = map(int,input().split())",
+        "creation_date": "2025-05-15T09:16:12.151Z"
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 3,
+    "fields": {
+        "name": "Change two variables",
+        "lang": "py",
+        "code": "a,b = b,a",
+        "creation_date": "2025-05-15T09:18:10.014Z"
+    }
+}
+]
