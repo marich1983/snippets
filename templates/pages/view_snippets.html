@@ -26,7 +26,8 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
-                        <th scope="col">Дата создания</th>
+                        <th scope="col">Язык</th>
+                        <th scope="col">Дата создания</th> 
                     </tr>
                     </thead>
                     <tbody>
@@ -36,7 +37,12 @@
                         <tr>
                             <td scope="row">{{ snip.id }}</td>
                             <td><a href="{% url "snippet" snip.id %}">{{ snip.name }}</a></td>
-                            <td>{{ snip.creation_date }}</td>
+                            <td scope="row">{{ snip.lang }}</td>
+                            <td>{{ snip.creation_date | date:"d F Y H:i:s"}}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4"> Нет доступных сниппетов! </td>
                         </tr>
                     {% endfor %}
 
