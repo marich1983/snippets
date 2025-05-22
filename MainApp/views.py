@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from . import models
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from MainApp.forms import SnippetForm
 
 
@@ -43,5 +43,10 @@ def snippet_page(request, snip_id: int):
     return render(request, 'pages/snippet.html', context)
 
 def create_snippet(request):
-    print(f"{request.POST = }")
-    return HttpResponse("Ok")
+    if request.method == "POST":
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("list-snip") #URL для списка сниппетов
+        return render(request, "pages/snippet.html", context={"form": form})
+    return HttpResponseNotAllowed(["POST"], "Something wrong")
