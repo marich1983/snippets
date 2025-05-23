@@ -7,7 +7,11 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>{{ pagename }}</h1>
+                <h1>
+                    {% if id %} Редактирование сниппета {% else %} {{ pagename_add }} {% endif %} 
+                    <!-- Как узнать id -->
+                    
+                </h1>
                 <hr>
             </div>
         </div>
@@ -19,7 +23,11 @@
                         {{ form.as_p }}
                     <div class='form-grop-row'>
                         <div class='col-6'>
-                            <input type="submit" class="btn btn-primary btn-block" value="Создать сниппет">
+                            {% if id %} 
+                                <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
+                            {% else %} 
+                                <input type="submit" class="btn btn-primary btn-block" value="Создать сниппет">
+                            {% endif %} 
                         </div>
                     </div>
                     

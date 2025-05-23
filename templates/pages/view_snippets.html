@@ -34,8 +34,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                     
-                        
                     {% for snip in snippets %}
                         <tr>
                             <td scope="row">{{ snip.id }}</td>
@@ -51,8 +49,13 @@
                                     <button type="submit" class="btn btn-danger">Удалить</button>
                                 </form>
                             </td>
-                            <td><a href="{% url "edit-snippet" snip.id %}">Edit</a></td>
-                            <td>{{ snippet.user.username }}</td>
+                            <td>
+                                <form action="{% url "edit-snippet" snip.id %}" method="">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-warning">Редактировать</button>
+                                </form>
+                            </td>
+                            <td>{{ snip.user.username }}</td>
                         </tr>
                     {% empty %}
                         <tr>

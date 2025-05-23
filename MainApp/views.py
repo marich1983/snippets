@@ -4,7 +4,7 @@ from . import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotAllowed
 from MainApp.forms import SnippetForm
-from django.contrib import auth
+from django.contrib import auth, messages
 
 
 def index_page(request):
@@ -17,7 +17,8 @@ def add_snippet_page(request):
     if request.method == "GET": 
         form = SnippetForm()
         context = {
-            'pagename': 'Добавление нового сниппета',
+            'pagename_add': 'Добавление нового сниппета',
+            'pagename_edit': 'Редактирование сниппета',
             'form': form
             }
         return render(request, 'pages/add_snippet.html', context)
@@ -35,21 +36,32 @@ def add_snippet_page(request):
         return render(request, "pages/snippet.html", context={"form": form})
     
 def del_snippet(request, snip_id):
-    context = {
-        'pagename': 'Удаление сниппета',
-        }
     # Найти сниппед по id или 404
     if request.method == "GET" or request.method == "POST":
-        snippet =get_object_or_404(models.Snippet, id=snip_id)
+        snippet = get_object_or_404(models.Snippet, id=snip_id)
         snippet.delete()
+        messages.success(request, "Успешное удаление")
     return redirect('list-snip')
 
 
 def edit_snippet(request, snip_id):
-    context = {
-        'pagename': 'Редактирование сниппета',
-        }
-    return render(request, "pages/edit_snippet.html", context)
+    snippet = get_object_or_404(models.Snippet, id=snip_id)
+    if request.method == "GET":
+        context = {
+            'form': SnippetForm(instance=snippet), 
+            'id': snip_id}
+        return render(request,'pages/add_snippet.html',context)
+    
+    elif request.method == 'POST':
+        form = SnippetForm(request.POST, instance=snippet)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Сохранено успешно")
+            return redirect('list-snip')
+        else:
+            return render(request,'pages/add_snippet.html',{'form':form})
+
+
 
 
 def snippets_page(request):
@@ -62,17 +74,17 @@ def snippets_page(request):
     
 
 def snippet_page(request, snip_id: int):
+    context= {
+        'pagename': 'Страница для сниппета'
+        }
     try:
         snippet = models.Snippet.objects.get(id=snip_id)
     except ObjectDoesNotExist:
-        return HttpResponse('Не найдено')
+        return render(request, 'pages/errors.html', context | {"error": f"Snippet with id={snip_id} not found."})
 
-
-    context= {
-        'pagename': 'Страница для сниппета',
-        'snippet': snippet
-        }
-    return render(request, 'pages/snippet.html', context)
+    else:
+        context['snippet'] = snippet
+        return render(request, 'pages/snippet.html', context)
 
 # def create_snippet(request):
 #     if request.method == "POST":

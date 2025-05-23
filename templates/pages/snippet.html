@@ -36,10 +36,22 @@
 
                     <div class='form-grop-row'>
                         <div class='col-6'>
-                            <form action="{% url "del-snippet" snippet.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Удалить</button>
-                            </form>
+                            <table class="table table-striped">
+                                <tr>
+                                    <a href="{% url "del-snippet" snippet.id %}">Delete</a>
+                                    <form action="{% url "del-snippet" snippet.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                    </form>
+                                </tr>
+                                <tr>
+                                    <a href="{% url "edit-snippet" snippet.id %}">Edit</a>
+                                    <form action="{% url "edit-snippet" snippet.id %}" method="">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning">Редактировать</button>
+                                    </form>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     
