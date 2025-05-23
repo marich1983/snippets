@@ -36,9 +36,10 @@
 
                     <div class='form-grop-row'>
                         <div class='col-6'>
-                            <a href="{% url "del-snippet" snippet.id %}">Удалить сниппет
-                                <input type="submit" class="btn btn-primary btn-block" value="Удалить сниппет">
-                            </a>
+                            <form action="{% url "del-snippet" snippet.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
                         </div>
                     </div>
                     

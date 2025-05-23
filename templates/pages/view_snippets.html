@@ -38,10 +38,18 @@
                     {% for snip in snippets %}
                         <tr>
                             <td scope="row">{{ snip.id }}</td>
-                            <td><a href="{% url "snippet" snip.id %}">{{ snip.name }}</a></td>
+                            <td>
+                                <a href="{% url "snippet" snip.id %}">{{ snip.name }}</a>
+                                
+                            </td>
                             <td scope="row">{{ snip.lang }}</td>
                             <td>{{ snip.creation_date | date:"d F Y H:i:s"}}</td>
-                            <td><a href="{% url "del-snippet" snip.id %}">Delete</a></td>
+                            <td>
+                                <form action="{% url "del-snippet" snip.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                            </td>
                             <td><a href="{% url "edit-snippet" snip.id %}">Edit</a></td>
                         </tr>
                     {% empty %}

@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from . import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotAllowed
@@ -31,14 +31,15 @@ def add_snippet_page(request):
         return render(request, "pages/snippet.html", context={"form": form})
     
 def del_snippet(request, snip_id):
-    snippet = models.Snippet.objects.get(id=snip_id)
     context = {
         'pagename': 'Удаление сниппета',
         }
-    if request.method =="POST":
+    # Найти сниппед по id или 404
+    if request.method == "GET" or request.method == "POST":
+        snippet =get_object_or_404(models.Snippet, id=snip_id)
         snippet.delete()
-        return redirect('list-snip')
-    return render(request, "pages/del_snippet.html", context)
+    return redirect('list-snip')
+
 
 def edit_snippet(request, snip_id):
     context = {
