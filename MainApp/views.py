@@ -64,11 +64,18 @@ def edit_snippet(request, snip_id):
 
 
 
-def snippets_page(request):
-    context = {
-        'pagename': 'Просмотр сниппетов',
-        'snippets': models.Snippet.objects.all()
-        }
+def snippets_page(request, user):
+    if user == 'all':
+        context = {
+            'pagename': 'Просмотр всех сниппетов',
+            'snippets': models.Snippet.objects.all()
+            }
+    else:
+        user = request.user
+        context = {
+            'pagename': f'Просмотр сниппетов пользователя {user.username}',
+            'snippets': models.Snippet.objects.filter(user=user.id)
+            }
     return render(request, 'pages/view_snippets.html', context)
 
     

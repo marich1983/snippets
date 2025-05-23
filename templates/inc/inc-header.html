@@ -18,10 +18,17 @@
                         </a>
                     </li>
                     <li class="form-inline">
-                        <a class="btn btn-outline-info" href=" {% url "list-snip" %}">
+                        <a class="btn btn-outline-info" href=" {% url "list-snip" 'all' %} ">
                             Посмотреть сниппеты
                         </a>
                     </li>
+                    {% if request.user.is_authenticated %}
+                    <li class="form-inline">
+                        <a class="btn btn-outline-info" href=" {% url "list-snip" request.user.username %}">
+                            Мои сниппеты
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             {% if request.user.is_authenticated %}
