@@ -30,6 +30,7 @@
                         <th scope="col">Дата создания</th> 
                         <th scope="col"></th> 
                         <th scope="col"></th>
+                        <th scope="col">Пользователь</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -51,6 +52,7 @@
                                 </form>
                             </td>
                             <td><a href="{% url "edit-snippet" snip.id %}">Edit</a></td>
+                            <td>{{ snippet.user.username }}</td>
                         </tr>
                     {% empty %}
                         <tr>
