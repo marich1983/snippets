@@ -28,9 +28,10 @@
                         <th scope="col">Название</th>
                         <th scope="col">Язык</th>
                         <th scope="col">Дата создания</th> 
-                        <th scope="col"></th> 
+                        <th scope="col">Действия</th> 
                         <th scope="col"></th>
                         <th scope="col">Пользователь</th>
+                        <th scope="col">Public</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -56,6 +57,11 @@
                                 </form>
                             </td>
                             <td>{{ snip.user.username }}</td>
+                            <td>
+                                
+                                {{ snip.public }}
+                                
+                            </td>
                         </tr>
                     {% empty %}
                         <tr>

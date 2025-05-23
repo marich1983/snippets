@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotAllowed
 from MainApp.forms import SnippetForm
 from django.contrib import auth, messages
+from django.urls import reverse
 
 
 def index_page(request):
@@ -32,7 +33,7 @@ def add_snippet_page(request):
                 snippet.user = request.user
                 snippet.save()
             # GET/ Snippet/list
-            return redirect("list-snip") #URL для списка сниппетов
+            return redirect("list-snip", 'all') #URL для списка сниппетов
         return render(request, "pages/snippet.html", context={"form": form})
     
 def del_snippet(request, snip_id):
@@ -41,7 +42,7 @@ def del_snippet(request, snip_id):
         snippet = get_object_or_404(models.Snippet, id=snip_id)
         snippet.delete()
         messages.success(request, "Успешное удаление")
-    return redirect('list-snip')
+    return redirect("list-snip", 'all')
 
 
 def edit_snippet(request, snip_id):
@@ -57,7 +58,7 @@ def edit_snippet(request, snip_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Сохранено успешно")
-            return redirect('list-snip')
+            return redirect("list-snip", 'all')
         else:
             return render(request,'pages/add_snippet.html',{'form':form})
 
@@ -68,7 +69,7 @@ def snippets_page(request, user):
     if user == 'all':
         context = {
             'pagename': 'Просмотр всех сниппетов',
-            'snippets': models.Snippet.objects.all()
+            'snippets': models.Snippet.objects.filter(public='Public')
             }
     else:
         user = request.user
