@@ -12,22 +12,34 @@ def index_page(request):
 
 
 def add_snippet_page(request):
-    form = SnippetForm()
-    context = {
-        'pagename': 'Добавление нового сниппета',
-        'form': form
-        }
-   
-    return render(request, 'pages/add_snippet.html', context)
+    # Создаем пустую форму при запросе ГЕТ
+    if request.method == "GET": 
+        form = SnippetForm()
+        context = {
+            'pagename': 'Добавление нового сниппета',
+            'form': form
+            }
+        return render(request, 'pages/add_snippet.html', context)
+    
+    # Получаем данные из формы и на их основе создаем новый сниппет, сохраняя в БД
+    if request.method == "POST":
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # GET/ Snippet/list
+            return redirect("list-snip") #URL для списка сниппетов
+        return render(request, "pages/snippet.html", context={"form": form})
 
 
 def snippets_page(request):
     context = {
         'pagename': 'Просмотр сниппетов',
         'snippets': models.Snippet.objects.all()
-
         }
     return render(request, 'pages/view_snippets.html', context)
+    
+
+
 
 def snippet_page(request, snip_id: int):
     try:
@@ -47,6 +59,7 @@ def create_snippet(request):
         form = SnippetForm(request.POST)
         if form.is_valid():
             form.save()
+            # GET/ Snippet/list
             return redirect("list-snip") #URL для списка сниппетов
         return render(request, "pages/snippet.html", context={"form": form})
     return HttpResponseNotAllowed(["POST"], "Something wrong")
