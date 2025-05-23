@@ -29,6 +29,22 @@ def add_snippet_page(request):
             # GET/ Snippet/list
             return redirect("list-snip") #URL для списка сниппетов
         return render(request, "pages/snippet.html", context={"form": form})
+    
+def del_snippet(request, snip_id):
+    snippet = models.Snippet.objects.get(id=snip_id)
+    context = {
+        'pagename': 'Удаление сниппета',
+        }
+    if request.method =="POST":
+        snippet.delete()
+        return redirect('list-snip')
+    return render(request, "pages/del_snippet.html", context)
+
+def edit_snippet(request, snip_id):
+    context = {
+        'pagename': 'Редактирование сниппета',
+        }
+    return render(request, "pages/edit_snippet.html", context)
 
 
 def snippets_page(request):
@@ -37,6 +53,7 @@ def snippets_page(request):
         'snippets': models.Snippet.objects.all()
         }
     return render(request, 'pages/view_snippets.html', context)
+
     
 
 
