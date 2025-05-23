@@ -4,6 +4,7 @@ from . import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotAllowed
 from MainApp.forms import SnippetForm
+from django.contrib import auth
 
 
 def index_page(request):
@@ -57,8 +58,6 @@ def snippets_page(request):
 
     
 
-
-
 def snippet_page(request, snip_id: int):
     try:
         snippet = models.Snippet.objects.get(id=snip_id)
@@ -72,12 +71,31 @@ def snippet_page(request, snip_id: int):
         }
     return render(request, 'pages/snippet.html', context)
 
-def create_snippet(request):
-    if request.method == "POST":
-        form = SnippetForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # GET/ Snippet/list
-            return redirect("list-snip") #URL для списка сниппетов
-        return render(request, "pages/snippet.html", context={"form": form})
-    return HttpResponseNotAllowed(["POST"], "Something wrong")
+# def create_snippet(request):
+#     if request.method == "POST":
+#         form = SnippetForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             # GET/ Snippet/list
+#             return redirect("list-snip") #URL для списка сниппетов
+#         return render(request, "pages/snippet.html", context={"form": form})
+#     return HttpResponseNotAllowed(["POST"], "Something wrong")
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        # print("username =", username)
+        # print("password =", password)
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+        else:
+            # Return error message
+            pass
+    return redirect('home')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('home')
