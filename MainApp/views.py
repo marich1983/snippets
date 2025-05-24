@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from . import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotAllowed
-from MainApp.forms import SnippetForm
+from MainApp.forms import SnippetForm, UserRegistrationForm
 from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -131,3 +131,19 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('home')
+
+def register(request):
+    context = {
+            'pagename_add': 'Регистрация',
+            }
+    # Создаем пустую форму при запросе ГЕТ
+    if request.method == "GET": 
+        form = UserRegistrationForm()
+
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home") 
+    context['form'] = form
+    return render(request, "pages/registration.html", context)
