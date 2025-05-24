@@ -46,21 +46,20 @@ def del_snippet(request, snip_id):
 
 
 def edit_snippet(request, snip_id):
+    context = {'pagename': "Обновление сниппета"}
     snippet = get_object_or_404(models.Snippet, id=snip_id)
     if request.method == "GET":
-        context = {
-            'form': SnippetForm(instance=snippet), 
-            'id': snip_id}
+        context['form'] = SnippetForm(instance=snippet)
+        context['id'] = snip_id
+
         return render(request,'pages/add_snippet.html',context)
     
-    elif request.method == 'POST':
-        form = SnippetForm(request.POST, instance=snippet)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Сохранено успешно")
-            return redirect("list-snip", 'all')
-        else:
-            return render(request,'pages/add_snippet.html',{'form':form})
+    if request.method == 'POST':
+        data_form = SnippetForm(request.POST, instance=snippet)
+        snippet.name = data_form['name']
+        snippet.code = data_form['code']
+        snippet.save()
+        return redirect("list-snip", 'all')
 
 
 
@@ -69,7 +68,7 @@ def snippets_page(request, user):
     if user == 'all':
         context = {
             'pagename': 'Просмотр всех сниппетов',
-            'snippets': models.Snippet.objects.filter(public='Public')
+            'snippets': models.Snippet.objects.all()
             }
     else:
         user = request.user
@@ -114,8 +113,12 @@ def login(request):
         if user is not None:
             auth.login(request, user)
         else:
+            context = {
+                "pagename": "PhutinBin",
+                "errors": ["Wrong userrname or password"]
+            }
             # Return error message
-            pass
+            return render(request, "pages/index.html", context)
     return redirect('home')
 
 
