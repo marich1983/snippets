@@ -56,7 +56,7 @@ def edit_snippet(request, snip_id):
         return render(request,'pages/add_snippet.html',context)
     
     if request.method == 'POST':
-        data_form = SnippetForm(request.POST, instance=snippet)
+        data_form = request.POST
         snippet.name = data_form['name']
         snippet.code = data_form['code']
         snippet.save()
