@@ -18,15 +18,15 @@
 
         <div class="row">
             <div class="col">
-                <form action="" method="post">
+                <form action="{% url "list-snip" %}" method="post">
                     {% csrf_token %}
                         {{ form.as_p }}
                     <div class='form-grop-row'>
                         <div class='col-6'>
                             {% if id %} 
-                                <input type="submit" class="btn btn-primary btn-block" value="Сохранить">
+                                <input type="submit" class="btn btn-primary btn-block" value="Сохранить" />
                             {% else %} 
-                                <input type="submit" class="btn btn-primary btn-block" value="Создать сниппет">
+                                <input type="submit" class="btn btn-primary btn-block" value="Создать сниппет" />
                             {% endif %} 
                         </div>
                     </div>

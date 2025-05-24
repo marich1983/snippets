@@ -31,7 +31,7 @@
                         <th scope="col">Действия</th> 
                         <th scope="col"></th>
                         <th scope="col">Пользователь</th>
-                        <th scope="col">Public</th>
+                        <th scope="col">Доступ</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,20 +45,31 @@
                             <td scope="row">{{ snip.lang }}</td>
                             <td>{{ snip.creation_date | date:"d F Y H:i:s"}}</td>
                             <td>
+                                {% if snip.user == request.user %}
                                 <form action="{% url "del-snippet" snip.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger">Удалить</button>
                                 </form>
+                                {% endif %}
                             </td>
                             <td>
+                                {% if snip.user == request.user %}
                                 <form action="{% url "edit-snippet" snip.id %}" method="">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-warning">Редактировать</button>
                                 </form>
+                                {% endif %}
                             </td>
                             <td>{{ snip.user.username }}</td>
                             <td>
-                                {{ snip.public }}  
+                                {% if snip.public %}
+                                Public
+                                {% elif snip.public is None %}
+                                
+                                {% else %}
+                                Private
+                                {% endif %}
+                               
                             </td>
                         </tr>
                     {% empty %}

@@ -6,13 +6,13 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from MainApp.forms import SnippetForm
 from django.contrib import auth, messages
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
 
 def index_page(request):
     context = {'pagename': 'PythonBin'}
     return render(request, 'pages/index.html', context)
 
-
+@login_required
 def add_snippet_page(request):
     # Создаем пустую форму при запросе ГЕТ
     if request.method == "GET": 
@@ -33,21 +33,22 @@ def add_snippet_page(request):
                 snippet.user = request.user
                 snippet.save()
             # GET/ Snippet/list
-            return redirect("list-snip", 'all') #URL для списка сниппетов
-        return render(request, "pages/snippet.html", context={"form": form})
+            return redirect("list-snip") #URL для списка сниппетов
+        return render(request, "pages/add_snippet.html", context={"form": form})
     
+@login_required    
 def del_snippet(request, snip_id):
     # Найти сниппед по id или 404
     if request.method == "GET" or request.method == "POST":
-        snippet = get_object_or_404(models.Snippet, id=snip_id)
+        snippet = get_object_or_404(models.Snippet.objects.filter(user=request.user), id=snip_id)
         snippet.delete()
         messages.success(request, "Успешное удаление")
-    return redirect("list-snip", 'all')
+    return redirect("list-snip")
 
-
+@login_required
 def edit_snippet(request, snip_id):
     context = {'pagename': "Обновление сниппета"}
-    snippet = get_object_or_404(models.Snippet, id=snip_id)
+    snippet = get_object_or_404(models.Snippet.objects.filter(user=request.user), id=snip_id)
     if request.method == "GET":
         context['form'] = SnippetForm(instance=snippet)
         context['id'] = snip_id
@@ -59,22 +60,27 @@ def edit_snippet(request, snip_id):
         snippet.name = data_form['name']
         snippet.code = data_form['code']
         snippet.save()
-        return redirect("list-snip", 'all')
+        
+        return redirect("list-snip")
 
 
 
 
-def snippets_page(request, user):
-    if user == 'all':
-        context = {
+def snippets_page(request):
+
+    context = {
             'pagename': 'Просмотр всех сниппетов',
             'snippets': models.Snippet.objects.all()
             }
-    else:
-        user = request.user
-        context = {
-            'pagename': f'Просмотр сниппетов пользователя {user.username}',
-            'snippets': models.Snippet.objects.filter(user=user.id)
+
+    return render(request, 'pages/view_snippets.html', context)
+
+@login_required
+def my_snippets(request):
+    snippets = models.Snippet.objects.filter(user=request.user)
+    context = {
+            'pagename': 'Мои сниппеты',
+            'snippets': snippets
             }
     return render(request, 'pages/view_snippets.html', context)
 
