@@ -1,5 +1,5 @@
 from django.forms import ModelForm, ValidationError, Textarea, TextInput, CheckboxInput, CharField, PasswordInput
-from MainApp.models import Snippet
+from MainApp.models import Snippet, Comment
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
@@ -9,7 +9,7 @@ class SnippetForm(ModelForm):
        model = Snippet
        # Описываем поля, которые будем заполнять в форме
        fields = ['name', 'lang', 'code', 'public']
-       labels = {'name': '', "lang": '', "code": '', "public": 'Public/Private'}
+       labels = {'name': '', "lang": '', "code": '', "public": 'Public'}
        widgets = {
            'name': TextInput(attrs={
                "class": "form-control",
@@ -53,3 +53,18 @@ class UserRegistrationForm(ModelForm):
        if commit:
            user.save()
        return user
+   
+class CommentForm(ModelForm):
+   class Meta:
+       model = Comment
+       fields = ['text']
+       labels = {'text': ''}
+       widgets = {
+           "text": Textarea(attrs={
+               "class": "form-control",
+               "rows": 5,
+               "placeholder": "Комментарий для сниппета",
+               "style": "max-width: 300px"
+           })
+       }
+

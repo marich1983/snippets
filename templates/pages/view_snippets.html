@@ -62,12 +62,10 @@
                             </td>
                             <td>{{ snip.user.username }}</td>
                             <td>
-                                {% if snip.public %}
-                                Public
-                                {% elif snip.public is None %}
-                                
-                                {% else %}
+                                {% if not snip.public %}
                                 Private
+                                {% else %}
+                                Public
                                 {% endif %}
                                
                             </td>

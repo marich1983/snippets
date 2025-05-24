@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from . import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotAllowed
-from MainApp.forms import SnippetForm, UserRegistrationForm
+from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
 from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -59,6 +59,7 @@ def edit_snippet(request, snip_id):
         data_form = request.POST
         snippet.name = data_form['name']
         snippet.code = data_form['code']
+        snippet.public = data_form.get('public', False)
         snippet.save()
         
         return redirect("list-snip")
@@ -97,6 +98,7 @@ def snippet_page(request, snip_id: int):
 
     else:
         context['snippet'] = snippet
+        context['comment_form'] = CommentForm()
         return render(request, 'pages/snippet.html', context)
 
 # def create_snippet(request):
@@ -147,3 +149,20 @@ def register(request):
             return redirect("home") 
     context['form'] = form
     return render(request, "pages/registration.html", context)
+
+@login_required
+def comment_add(request):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            snippet_id = request.POST.get("snippet_id")
+            snippet = models.Snippet.objects.get(id=snippet_id)
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.snippet = snippet
+            comment.save()
+       
+        return redirect('snippet', snip_id=snippet.id)
+    raise Http404
+
+
