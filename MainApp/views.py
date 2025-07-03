@@ -1,3 +1,4 @@
+
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models
@@ -33,7 +34,7 @@ def add_snippet_page(request):
                 snippet.user = request.user
                 snippet.save()
             # GET/ Snippet/list
-            return redirect("list-snip") #URL для списка сниппетов
+            return redirect("my-snippets") #URL для списка сниппетов
         return render(request, "pages/add_snippet.html", context={"form": form})
     
 @login_required    
@@ -43,18 +44,20 @@ def del_snippet(request, snip_id):
         snippet = get_object_or_404(models.Snippet.objects.filter(user=request.user), id=snip_id)
         snippet.delete()
         messages.success(request, "Успешное удаление")
-    return redirect("list-snip")
+    return redirect("my-snippets")
 
 @login_required
 def edit_snippet(request, snip_id):
     context = {'pagename': "Обновление сниппета"}
     snippet = get_object_or_404(models.Snippet.objects.filter(user=request.user), id=snip_id)
+    # Создаем форму на основе данных сниппета при запросе ГЕТ
     if request.method == "GET":
         context['form'] = SnippetForm(instance=snippet)
         context['id'] = snip_id
 
         return render(request,'pages/add_snippet.html',context)
     
+    # Получаем данные из формы и на их основе обновляем спиппет, сохраняя его в БД
     if request.method == 'POST':
         data_form = request.POST
         snippet.name = data_form['name']
@@ -62,16 +65,17 @@ def edit_snippet(request, snip_id):
         snippet.public = data_form.get('public', False)
         snippet.save()
         
-        return redirect("list-snip")
+        return redirect("my-snippets")
 
 
 
 
 def snippets_page(request):
-
+    snippets = models.Snippet.objects.filter(public=True)
+    # if request.user.is_authenticated:
     context = {
             'pagename': 'Просмотр всех сниппетов',
-            'snippets': models.Snippet.objects.all()
+            'snippets': snippets
             }
 
     return render(request, 'pages/view_snippets.html', context)
@@ -101,31 +105,21 @@ def snippet_page(request, snip_id: int):
         context['comment_form'] = CommentForm()
         return render(request, 'pages/snippet.html', context)
 
-# def create_snippet(request):
-#     if request.method == "POST":
-#         form = SnippetForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             # GET/ Snippet/list
-#             return redirect("list-snip") #URL для списка сниппетов
-#         return render(request, "pages/snippet.html", context={"form": form})
-#     return HttpResponseNotAllowed(["POST"], "Something wrong")
 
 def login(request):
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
-        # print("username =", username)
-        # print("password =", password)
+
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
         else:
             context = {
-                "pagename": "PhutinBin",
-                "errors": ["Wrong userrname or password"]
+                "pagename": "PythonBin",
+                "errors": ["Wrong username or password"]
             }
-            # Return error message
+
             return render(request, "pages/index.html", context)
     return redirect('home')
 
@@ -136,12 +130,13 @@ def logout(request):
 
 def register(request):
     context = {
-            'pagename_add': 'Регистрация',
+            'pagename_add': 'Регистрация нового пользователя',
             }
     # Создаем пустую форму при запросе ГЕТ
     if request.method == "GET": 
         form = UserRegistrationForm()
 
+    # Получаем данные из формы и на их основе создаем нового пользователя, сохраняя его в БД
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():

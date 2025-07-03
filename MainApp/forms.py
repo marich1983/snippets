@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ValidationError, Textarea, TextInput, CheckboxInput, CharField, PasswordInput
+from django.forms import ModelForm, Textarea, TextInput, CheckboxInput, CharField, PasswordInput
 from MainApp.models import Snippet, Comment
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -9,7 +9,7 @@ class SnippetForm(ModelForm):
        model = Snippet
        # Описываем поля, которые будем заполнять в форме
        fields = ['name', 'lang', 'code', 'public']
-       labels = {'name': '', "lang": '', "code": '', "public": 'Public'}
+       labels = {'name': '', "lang": '', "code": '', "public": 'Public(checked) / Private(un-cheked)'}
        widgets = {
            'name': TextInput(attrs={
                "class": "form-control",

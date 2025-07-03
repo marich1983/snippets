@@ -1,57 +1,14 @@
 [
 {
     "model": "MainApp.snippet",
-    "pk": 3,
+    "pk": 1,
     "fields": {
-        "name": "Change two variables",
+        "name": "first",
         "lang": "py",
-        "code": "a,b = b,a",
-        "creation_date": "2025-05-15T09:18:10.014Z",
-        "user": null
-    }
-},
-{
-    "model": "MainApp.snippet",
-    "pk": 4,
-    "fields": {
-        "name": "new snip",
-        "lang": "py",
-        "code": "print(\"New snippet')",
-        "creation_date": "2025-05-22T17:04:55.788Z",
-        "user": null
-    }
-},
-{
-    "model": "MainApp.snippet",
-    "pk": 8,
-    "fields": {
-        "name": "test c",
-        "lang": "cpp",
-        "code": "printf():",
-        "creation_date": "2025-05-23T11:22:13.860Z",
-        "user": null
-    }
-},
-{
-    "model": "MainApp.snippet",
-    "pk": 9,
-    "fields": {
-        "name": "user's snippet",
-        "lang": "cpp",
-        "code": "printf('Hello\");",
-        "creation_date": "2025-05-23T18:02:56.520Z",
-        "user": 2
-    }
-},
-{
-    "model": "MainApp.snippet",
-    "pk": 10,
-    "fields": {
-        "name": "admin's snippet",
-        "lang": "js",
-        "code": "console.log",
-        "creation_date": "2025-05-23T18:03:40.900Z",
-        "user": 1
+        "code": "print()",
+        "creation_date": "2025-07-02T16:31:39.855Z",
+        "user": 1,
+        "public": true
     }
 }
 ]

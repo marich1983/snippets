@@ -55,11 +55,11 @@
                     </div>
                     </div>
                 {% if errors %}
-                <ul>
-                    {% for error in errors %}
-                        <li style="color: red;"> {{ error }} </li>
-                    {% endfor %}
-                </ul>
+                    <ul>
+                        {% for error in errors %}
+                            <li style="color: red;"> {{ error }} </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
                 <a style="padding-left: 10px" href="{% url "register" %}" class="btn btn-info">Регистрация</a>
             {% endif %}

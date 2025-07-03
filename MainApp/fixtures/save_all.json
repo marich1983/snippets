@@ -3,30 +3,84 @@
     "model": "MainApp.snippet",
     "pk": 1,
     "fields": {
-        "name": "Hello world Snippet",
+        "name": "first",
         "lang": "py",
-        "code": "print(\"Hello world\")",
-        "creation_date": "2025-05-15T09:11:03.011Z"
+        "code": "print()",
+        "creation_date": "2025-07-03T08:48:56.264Z",
+        "user": 1,
+        "public": false
     }
 },
 {
     "model": "MainApp.snippet",
     "pk": 2,
     "fields": {
-        "name": "Input two integers",
-        "lang": "py",
-        "code": "a,b = map(int,input().split())",
-        "creation_date": "2025-05-15T09:16:12.151Z"
+        "name": "second marina",
+        "lang": "html",
+        "code": "test",
+        "creation_date": "2025-07-03T08:48:49.206Z",
+        "user": 1,
+        "public": true
     }
 },
 {
     "model": "MainApp.snippet",
     "pk": 3,
     "fields": {
-        "name": "Change two variables",
+        "name": "user1 first",
         "lang": "py",
-        "code": "a,b = b,a",
-        "creation_date": "2025-05-15T09:18:10.014Z"
+        "code": "user1 first test",
+        "creation_date": "2025-07-03T18:53:39.883Z",
+        "user": 2,
+        "public": true
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 5,
+    "fields": {
+        "name": "user1 second",
+        "lang": "go",
+        "code": "second",
+        "creation_date": "2025-07-03T18:52:13.404Z",
+        "user": 2,
+        "public": false
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 6,
+    "fields": {
+        "name": "user1 third",
+        "lang": "cpp",
+        "code": "33333",
+        "creation_date": "2025-07-03T18:55:15.289Z",
+        "user": 2,
+        "public": true
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 8,
+    "fields": {
+        "name": "user2 first",
+        "lang": "py",
+        "code": "11111111",
+        "creation_date": "2025-07-03T20:12:38.338Z",
+        "user": 3,
+        "public": false
+    }
+},
+{
+    "model": "MainApp.snippet",
+    "pk": 9,
+    "fields": {
+        "name": "user2 second",
+        "lang": "html",
+        "code": "<><>",
+        "creation_date": "2025-07-03T20:08:34.249Z",
+        "user": 3,
+        "public": true
     }
 }
 ]

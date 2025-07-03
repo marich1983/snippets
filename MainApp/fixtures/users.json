@@ -1,38 +1,14 @@
 [
 {
-    "model": "auth.user",
+    "model": "MainApp.snippet",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$1000000$lUOCOFyNy4GFJXq2X2c4bl$4fICQYCZ4Yf+YIt2xvmtjzzAfFUwoBhWFfAULgGSMHg=",
-        "last_login": "2025-05-23T18:03:13.674Z",
-        "is_superuser": true,
-        "username": "admin",
-        "first_name": "",
-        "last_name": "",
-        "email": "admin@mail.com",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2025-05-23T13:31:47.697Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 2,
-    "fields": {
-        "password": "pbkdf2_sha256$1000000$97O65rsrkxYWF11nkNziyN$lG33nRQKFIN+Z4eTsLGOaoPqhgaoM6kPSoW57sOLkHk=",
-        "last_login": "2025-05-23T18:02:26.224Z",
-        "is_superuser": false,
-        "username": "user1",
-        "first_name": "",
-        "last_name": "",
-        "email": "user1@mail.ru",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2025-05-23T17:54:08.120Z",
-        "groups": [],
-        "user_permissions": []
+        "name": "first",
+        "lang": "py",
+        "code": "print()",
+        "creation_date": "2025-07-02T16:31:39.855Z",
+        "user": 1,
+        "public": true
     }
 }
 ]
