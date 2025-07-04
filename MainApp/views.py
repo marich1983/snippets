@@ -8,6 +8,8 @@ from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
 from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg, Case, Count, F, Max, Min, Prefetch, Q, Sum, When
+
 
 def index_page(request):
     context = {'pagename': 'PythonBin'}
@@ -72,7 +74,8 @@ def edit_snippet(request, snip_id):
 
 def snippets_page(request):
     snippets = models.Snippet.objects.filter(public=True)
-    # if request.user.is_authenticated:
+    if request.user.is_authenticated:
+        snippets = models.Snippet.objects.filter(Q(public=True) | Q(user=request.user))
     context = {
             'pagename': 'Просмотр всех сниппетов',
             'snippets': snippets
